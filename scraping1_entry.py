@@ -66,24 +66,18 @@ pandas: CSVにデータを保存しよう
 # -------------------------------------------------------
 """
 # まずは列名を作成
-columns = ["Name", "Url"]
-df1 = pd.DataFrame(columns=columns) # 列名を指定する
+columns = ["name", "url"]
+df2 = pd.DataFrame(columns=columns) # 列名を指定する
 # print(df)
-"""
-Empty DataFrame
-Columns: [Name, Url]
-Index: []
-"""
-# 行の作成
-se = pd.Series(['ゴールデンウィークの休業日の変更について', 'https://crossfor.co.jp/post-8215/'], columns)
-df1 = df1.append(se, columns) # データフレームに行を追加
-# print(df1)
-# さらに追加
-se = pd.Series(['新型コロナウイルス感染拡大に伴う対応について', 'https://crossfor.co.jp/post-8205/'], columns)
-df1 = df1.append(se, columns)
-se = pd.Series(['日本国内における模倣品対策に関する取組みについて」を追加しました。', 'https://crossfor.co.jp/post-5954/'], columns)
-df1 = df1.append(se, columns)
-print(df1)
+# 記事名と記事URLをデータフレームに追加
+for tag in p_tags:
+    name = tag.a.string
+    url = tag.a.get("href")
+    # 行の作成
+    se = pd.Series([name, url], columns)
+    print(se)
+    df2 = df2.append(se, columns) # データフレームに行を追加
+    print(df2)
 
 # 作成したデータフレームをCSVに変換
 #df.to_csv(“ファイル名.csv”)でcsvファイルを作成できます。
