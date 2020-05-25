@@ -37,9 +37,7 @@ category_res = requests.get("https://dividable.net/category/python/").text  # py
 # -------------------------------------------------------
 # 「次へ」があれば、次のページに遷移する (「次へ」はclass "next")
 # -------------------------------------------------------
-soup = BeautifulSoup(category_res, 'html.parser')
-a_next_tag = soup.find_all("a", {"class": "next"})  # 次へがあるか確認するコード
-# pprint.pprint(a_next_tag)
+
 """ 考え方：
 #2ページ目で「次へ」を探す→ちゃんとある
 category_res = requests.get("https://dividable.net/category/python/page/3").text
@@ -53,14 +51,24 @@ soup = BeautifulSoup(category_res, 'html.parser')
 a_next_tag= soup.find_all("a", {"class": "next"}) # 次へがあるか確認するコード
 print (a_next_tag)   # -> []
 """
+# -------------------------------------------------------
+# それぞれのカテゴリページから、記事の内容を取り出す
+# それぞれのページからタイトルとURLを取り出したい（h3とその中のaタグのリンク）
+# -------------------------------------------------------
 page_count = 1
 category_res = ""
 while True:
+    print("------------{} ページ目------------".format(page_count))
     # str() : 数値を文字列に変換する。→文字列に数値を連結できる（変換しないと連結できない）
     category_res = requests.get("https://dividable.net/category/python/" + "page/" + str(page_count)).text
     # print(category_res)
     soup = BeautifulSoup(category_res, 'html.parser')
-    print("{}ページ目".format(page_count))
+
+    post_tags = soup.select("div.post")  # 大枠を取得。共通してこの中にh3とaが入っている
+    for post_tag in post_tags:
+        print(post_tag.select("h3")[0].text)   # select = find_allなので番号指定（h3やaが複数ある場合を想定）
+        print(post_tag.select("a")[0].get("href"))
+        print ("Python学習")
     a_next_tag = soup.find_all("a", {"class": "next"})  # 次へがあるか確認するコード
     if a_next_tag:
         page_count += 1
