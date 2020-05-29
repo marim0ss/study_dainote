@@ -9,7 +9,7 @@ import pprint
 # -------------------------------------------------------
 # requests：requests.get(url)でページ情報取得→.textでHTML内容を取得
 html_doc = requests.get("https://crossfor.co.jp/").text
-soup = BeautifulSoup(html_doc, 'html.parser') 
+soup = BeautifulSoup(html_doc, 'html.parser')
 # print(soup.prettify())
 """
 a_tags = soup.find_all("a")
@@ -40,7 +40,7 @@ pandas: CSVにデータを保存しよう
 # まずは列名を作成
 columns = ["name", "url"]
 df2 = pd.DataFrame(columns=columns) # 列名を指定する
-# print(df)
+# print(df2)
 # 記事名と記事URLをデータフレームに追加
 for tag in p_tags:
     name = tag.a.string
